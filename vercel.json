@@ -1,0 +1,13 @@
+{
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [
+    { "source": "/chat",         "destination": "https://meet-ai-portfolio-backend.onrender.com/chat" },
+    { "source": "/analyze",      "destination": "https://meet-ai-portfolio-backend.onrender.com/analyze" },
+    { "source": "/share/:path*", "destination": "https://meet-ai-portfolio-backend.onrender.com/share/:path*" },
+    { "source": "/resume",       "destination": "https://meet-ai-portfolio-backend.onrender.com/resume" },
+    { "source": "/visit",        "destination": "https://meet-ai-portfolio-backend.onrender.com/visit" },
+    { "source": "/stats",        "destination": "https://meet-ai-portfolio-backend.onrender.com/stats" },
+    { "source": "/health",       "destination": "https://meet-ai-portfolio-backend.onrender.com/health" }
+  ]
+}
