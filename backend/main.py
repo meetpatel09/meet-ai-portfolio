@@ -179,12 +179,12 @@ async def get_stats():
 
 @app.post("/chat")
 @limiter.limit("20/minute")
-async def chat(request: ChatRequest, req: Request):
+async def chat(body: ChatRequest, request: Request):
     try:
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-        for msg in request.history:
+        for msg in body.history:
             messages.append({"role": msg.role, "content": msg.content})
-        messages.append({"role": "user", "content": request.message})
+        messages.append({"role": "user", "content": body.message})
 
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
@@ -247,15 +247,15 @@ RULES:
 
 @app.post("/analyze")
 @limiter.limit("10/minute")
-async def analyze_fit(request: AnalyzeRequest, req: Request):
-    if not request.jd.strip():
+async def analyze_fit(body: AnalyzeRequest, request: Request):
+    if not body.jd.strip():
         raise HTTPException(status_code=400, detail="Job description cannot be empty")
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": ANALYZE_PROMPT},
-                {"role": "user", "content": f"JOB DESCRIPTION:\n{request.jd.strip()}"},
+                {"role": "user", "content": f"JOB DESCRIPTION:\n{body.jd.strip()}"},
             ],
             max_tokens=512,
             temperature=0.4,
