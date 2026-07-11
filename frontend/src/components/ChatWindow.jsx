@@ -1086,17 +1086,31 @@ export default function ChatWindow() {
         backdropFilter: 'blur(12px)',
         position: 'relative', zIndex: 1,
       }}>
-        <div style={{
-          width: 38, height: 38, borderRadius: '50%',
-          background: 'linear-gradient(135deg, #7c6ef2, #a78bfa)',
-          boxShadow: '0 0 14px rgba(124,110,242,0.5)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontWeight: 700, fontSize: 15, color: '#fff',
-        }}>M</div>
-        <div>
-          <div style={{ fontWeight: 600, fontSize: 15, color: '#f0f0f0' }}>Meet Patel</div>
-          <div style={{ fontSize: 12, color: '#7c6ef2' }}>Data Engineer · AI Assistant</div>
-        </div>
+        <button
+          onClick={() => { if (started) { setMessages([]); setStarted(false) } }}
+          title="Back to home"
+          style={{
+            display: 'flex', alignItems: 'center', gap: 12,
+            background: 'none', border: 'none', padding: 0,
+            cursor: started ? 'pointer' : 'default',
+            textAlign: 'left',
+          }}
+        >
+          <div style={{
+            width: 38, height: 38, borderRadius: '50%',
+            background: 'linear-gradient(135deg, #7c6ef2, #a78bfa)',
+            boxShadow: started ? '0 0 18px rgba(124,110,242,0.7)' : '0 0 14px rgba(124,110,242,0.5)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontWeight: 700, fontSize: 15, color: '#fff',
+            transition: 'box-shadow 0.2s',
+          }}>M</div>
+          <div>
+            <div style={{ fontWeight: 600, fontSize: 15, color: '#f0f0f0' }}>Meet Patel</div>
+            <div style={{ fontSize: 12, color: started ? '#a78bfa' : '#7c6ef2', transition: 'color 0.2s' }}>
+              {started ? '← Home' : 'Data Engineer · AI Assistant'}
+            </div>
+          </div>
+        </button>
 
         {/* Live stats counter */}
         {stats.visitors !== null && !isMobile && (
