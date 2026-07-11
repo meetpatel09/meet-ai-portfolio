@@ -924,6 +924,7 @@ export default function ChatWindow() {
   const [stats, setStats] = useState({ visitors: null, chats: null })
   const [showAnalyzer, setShowAnalyzer] = useState(false)
   const [showShare, setShowShare] = useState(false)
+  const [contactCardOpen, setContactCardOpen] = useState(false)
   const [sharedView, setSharedView] = useState(null) // { messages } — read-only mode
   const isMobile = useIsMobile()
   const bottomRef = useRef(null)
@@ -1359,11 +1360,29 @@ export default function ChatWindow() {
       )}
 
       {/* ── Floating Contact Card ───────────────────────────────────────────── */}
+      {/* Mobile: collapsed toggle button */}
+      {isMobile && !contactCardOpen && (
+        <button
+          onClick={() => setContactCardOpen(true)}
+          style={{
+            position: 'fixed', bottom: 90, right: 12, zIndex: 20,
+            background: 'linear-gradient(135deg, #7c6ef2, #a78bfa)',
+            border: 'none', borderRadius: 24, padding: '8px 14px',
+            color: '#fff', fontSize: 12, fontWeight: 700,
+            cursor: 'pointer', boxShadow: '0 4px 20px rgba(124,110,242,0.5)',
+            display: 'flex', alignItems: 'center', gap: 6,
+          }}
+        >
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff', display: 'inline-block' }} />
+          Hire Me
+        </button>
+      )}
       <div style={{
         position: 'fixed',
         bottom: isMobile ? 90 : 100,
         right: isMobile ? 12 : 24,
         zIndex: 20,
+        display: isMobile && !contactCardOpen ? 'none' : 'block',
         background: 'rgba(18,18,30,0.92)',
         border: '1px solid #3a2a6a',
         borderRadius: 16,
@@ -1386,6 +1405,12 @@ export default function ChatWindow() {
             animation: 'pulse 2s ease-in-out infinite',
           }} />
           To Hire Meet
+          {isMobile && (
+            <button onClick={() => setContactCardOpen(false)} style={{
+              marginLeft: 'auto', background: 'none', border: 'none',
+              color: '#555', cursor: 'pointer', fontSize: 16, lineHeight: 1, padding: 0,
+            }}>×</button>
+          )}
         </div>
         {/* Schedule a meeting */}
         <a
