@@ -1374,7 +1374,7 @@ export default function ChatWindow() {
           }}
         >
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff', display: 'inline-block' }} />
-          Hire Me
+          To Hire Meet
         </button>
       )}
       <div style={{
