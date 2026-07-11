@@ -1098,7 +1098,7 @@ export default function ChatWindow() {
         </div>
 
         {/* Live stats counter */}
-        {stats.visitors !== null && (
+        {stats.visitors !== null && !isMobile && (
           <div style={{
             display: 'flex', alignItems: 'center', gap: isMobile ? 8 : 14,
             marginLeft: 12,
@@ -1159,13 +1159,13 @@ export default function ChatWindow() {
             {isMobile ? 'Fit check' : 'See if Meet fits your role'}
           </button>
 
-          {[
+          {!isMobile && [
             { label: 'LinkedIn', url: 'https://linkedin.com/in/meet-patel-314050108' },
             { label: 'GitHub', url: 'https://github.com/meetpatel09' },
             { label: 'Email', url: 'mailto:meetpatel0996@gmail.com' },
           ].map(({ label, url }) => (
             <a key={label} href={url} target="_blank" rel="noreferrer" style={{
-              color: '#555', textDecoration: 'none', fontSize: isMobile ? 12 : 13,
+              color: '#555', textDecoration: 'none', fontSize: 13,
               transition: 'color 0.2s',
             }}
               onMouseEnter={e => e.currentTarget.style.color = '#a78bfa'}
