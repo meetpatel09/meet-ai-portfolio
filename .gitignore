@@ -10,7 +10,6 @@ venv/
 backend/.env
 backend/stats.json
 backend/shares/
-backend/resume.pdf
 
 # Node
 frontend/node_modules/
