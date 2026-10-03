@@ -1010,11 +1010,34 @@ export default function ChatWindow() {
         content: m.content,
       }))
 
-      const res = await fetch(CHAT_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg, history }),
-      })
+      // Retry up to 3 times — handles Render cold-start (~30s spin-up)
+      let res, attempts = 0
+      while (attempts < 3) {
+        try {
+          res = await fetch(CHAT_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userMsg, history }),
+            signal: AbortSignal.timeout(45000), // 45s timeout for cold start
+          })
+          break
+        } catch (fetchErr) {
+          attempts++
+          if (attempts === 1) {
+            // Show waking-up message after first failure
+            setMessages(prev => {
+              const updated = [...prev]
+              updated[updated.length - 1] = {
+                ...updated[updated.length - 1],
+                content: '⏳ The server is waking up (free tier cold start ~30s). Retrying...',
+              }
+              return updated
+            })
+          }
+          if (attempts >= 3) throw fetchErr
+          await new Promise(r => setTimeout(r, 10000)) // wait 10s before retry
+        }
+      }
 
       if (!res.ok) throw new Error(`Server error: ${res.status}`)
 
@@ -1054,7 +1077,7 @@ export default function ChatWindow() {
     } catch (err) {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: "Sorry, I couldn't connect to the server. Please make sure the backend is running.",
+        content: "The server took too long to respond — it may be starting up. Please try again in a few seconds.",
         suggestions: [],
         showContact: false,
       }])
